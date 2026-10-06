@@ -8,7 +8,7 @@ export async function sendToGroq(messages) {
   try {
     const chatCompletion = await groq.chat.completions.create({
       messages: messages,
-      model: "llama3-8b-8192", // Standard accessible Groq model
+      model: "openai/gpt-oss-20b",
       response_format: { type: "json_object" },
     });
 
