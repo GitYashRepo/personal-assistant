@@ -1,30 +1,19 @@
-let Audio: any = null;
-try {
-  Audio = require('expo-av').Audio;
-} catch (e) {
-  console.warn("expo-av native module not found. You need to build a custom dev client.");
-}
+import { AudioModule, requestRecordingPermissionsAsync, setAudioModeAsync, RecordingPresets } from 'expo-audio';
 
 let recording: any = null;
 
 export const startRecording = async () => {
-  if (!Audio) {
-    alert("Microphone requires a custom dev build (npx expo run:android)");
-    return false;
-  }
-
   try {
-    const permission = await Audio.requestPermissionsAsync();
+    const permission = await requestRecordingPermissionsAsync();
     if (permission.status === 'granted') {
-      await Audio.setAudioModeAsync({
-        allowsRecordingIOS: true,
-        playsInSilentModeIOS: true,
+      await setAudioModeAsync({
+        allowsRecording: true,
+        playsInSilentMode: true,
       });
 
-      const { recording: newRecording } = await Audio.Recording.createAsync(
-        Audio.RecordingOptionsPresets.HIGH_QUALITY
-      );
-      recording = newRecording;
+      recording = new AudioModule.AudioRecorder(RecordingPresets.HIGH_QUALITY);
+      await recording.prepareToRecordAsync();
+      recording.record();
       return true;
     } else {
       console.warn('Microphone permission not granted');
@@ -37,11 +26,11 @@ export const startRecording = async () => {
 };
 
 export const stopRecording = async (): Promise<string | null> => {
-  if (!recording || !Audio) return null;
+  if (!recording) return null;
 
   try {
-    await recording.stopAndUnloadAsync();
-    const uri = recording.getURI();
+    await recording.stop();
+    const uri = recording.uri;
     recording = null;
     return uri;
   } catch (err) {
