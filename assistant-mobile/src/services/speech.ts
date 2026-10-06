@@ -1,6 +1,6 @@
 let Audio: any = null;
 try {
-  Audio = require('expo-audio').Audio;
+  Audio = require('expo-av').Audio;
 } catch (e) {
   console.warn("expo-av native module not found. You need to build a custom dev client.");
 }

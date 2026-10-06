@@ -39,6 +39,18 @@ export async function POST(req) {
       validateAction(result.action);
     }
 
+    // Save the conversation to MongoDB so Kairon remembers
+    try {
+      if (result.response) {
+        await Memory.create([
+          { key: "User Message", value: userMessage },
+          { key: "Kairon Response", value: result.response }
+        ]);
+      }
+    } catch (saveError) {
+      console.warn("Failed to save memory to MongoDB:", saveError.message);
+    }
+
     return Response.json(result);
   } catch (error) {
     console.error("API Error:", error);

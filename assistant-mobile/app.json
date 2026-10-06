@@ -21,12 +21,16 @@
       "package": "com.singhyash2k1.assistantmobile",
       "permissions": [
         "com.android.alarm.permission.SET_ALARM",
+        "android.permission.SCHEDULE_EXACT_ALARM",
         "android.permission.READ_CALENDAR",
         "android.permission.WRITE_CALENDAR",
         "android.permission.FOREGROUND_SERVICE",
         "android.permission.FOREGROUND_SERVICE_MICROPHONE",
         "android.permission.WAKE_LOCK",
-        "android.permission.RECORD_AUDIO"
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK",
+        "android.permission.POST_NOTIFICATIONS"
       ]
     },
     "web": {
@@ -51,11 +55,18 @@
       ],
       "expo-audio",
       "expo-video",
-      "./plugins/withLockScreen.js"
+      "./plugins/withLockScreen.js",
+      "./plugins/withForegroundService.js"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "4c289e6f-9fda-4d27-ad37-0fbe170f9cdc"
+      }
     }
   }
 }
